@@ -1,0 +1,28 @@
+# ============================================
+# security.txt - VerificaCodigos
+# Estándar RFC 9116
+# Ubicación: /.well-known/security.txt
+# ============================================
+
+# Contacto para reportar vulnerabilidades
+Contact: https://verificacodigos.com/report-vulnerability
+Contact: security@verificacodigos.com
+Contact: mailto:security@verificacodigos.com
+
+# Página de política de seguridad
+Policy: https://verificacodigos.com/security-policy
+
+# Expiración del archivo
+Expires: 2026-12-31T23:59:59Z
+
+# Lenguajes soportados
+Preferred-Languages: es, en
+
+# Clave PGP pública (opcional, para cifrar reportes)
+Acknowledgments: https://verificacodigos.com/security-acknowledgments
+
+# Tiempo de respuesta garantizado
+Response-Time: 48 hours
+
+# Recompensas por bugs (bounty program)
+Canonical: https://verificacodigos.com/.well-known/security.txt

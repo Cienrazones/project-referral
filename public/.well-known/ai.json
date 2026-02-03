@@ -1,0 +1,233 @@
+{
+  "$schema": "https://schema.openai.com/ai.json",
+  "version": "1.0",
+  "name": "VerificaCodigos AI",
+  "description": "Plataforma inteligente de códigos de descuento verificados por la comunidad",
+  "url": "https://verificacodigos.com",
+  "contact_email": "api@verificacodigos.com",
+
+  "ai_agents": [
+    {
+      "id": "codigo-finder",
+      "name": "Buscador de Códigos",
+      "description": "Encuentra los mejores códigos de descuento por app, categoría o evento",
+      "type": "search_and_filter",
+      "capabilities": {
+        "search": true,
+        "filter_by_category": true,
+        "filter_by_app": true,
+        "sort_by_popularity": true,
+        "sort_by_value": true,
+        "reasoning": false
+      },
+      "rate_limits": {
+        "requests_per_minute": 100,
+        "requests_per_hour": 5000,
+        "burst_size": 10
+      },
+      "cache_strategy": "aggressive",
+      "ttl_seconds": 3600,
+      "requires_authentication": false
+    },
+
+    {
+      "id": "codigo-validator",
+      "name": "Validador de Códigos",
+      "description": "Verifica si un código de descuento es válido y funciona",
+      "type": "validation",
+      "capabilities": {
+        "verify_code": true,
+        "check_expiration": true,
+        "show_success_rate": true,
+        "reasoning": true
+      },
+      "rate_limits": {
+        "requests_per_minute": 50,
+        "requests_per_hour": 2000
+      },
+      "cache_strategy": "moderate",
+      "ttl_seconds": 1800,
+      "requires_authentication": false,
+      "attribution_required": true
+    },
+
+    {
+      "id": "codigo-recommender",
+      "name": "Recomendador Inteligente",
+      "description": "Sugiere mejores códigos basado en preferencias y historial",
+      "type": "recommendation",
+      "capabilities": {
+        "personalized_suggestions": true,
+        "trending_codes": true,
+        "category_trends": true,
+        "reasoning": true
+      },
+      "rate_limits": {
+        "requests_per_minute": 30,
+        "requests_per_hour": 1000
+      },
+      "cache_strategy": "minimal",
+      "ttl_seconds": 600,
+      "requires_authentication": true,
+      "attribution_required": true
+    }
+  ],
+
+  "api_endpoints": [
+    {
+      "path": "/api/v1/codigos/buscar",
+      "method": "GET",
+      "description": "Busca códigos con filtros avanzados",
+      "ai_friendly": true,
+      "parameters": {
+        "q": "string (búsqueda por app, categoría o código)",
+        "categoria": "enum (Comida y Bebida, Viajes, etc)",
+        "sort": "enum (relevancia, popularidad, valor)",
+        "limit": "integer (1-50, default 10)"
+      },
+      "response_format": "application/json",
+      "rate_limit": "100 req/min"
+    },
+
+    {
+      "path": "/api/v1/codigos/{id}/validar",
+      "method": "POST",
+      "description": "Valida un código específico",
+      "ai_friendly": true,
+      "authentication": false,
+      "response_format": "application/json",
+      "rate_limit": "50 req/min"
+    },
+
+    {
+      "path": "/api/v1/recomendaciones/personalizadas",
+      "method": "GET",
+      "description": "Obtiene recomendaciones personalizadas",
+      "ai_friendly": true,
+      "authentication": true,
+      "response_format": "application/json",
+      "rate_limit": "30 req/min"
+    }
+  ],
+
+  "data_types": {
+    "codigo": {
+      "type": "object",
+      "properties": {
+        "id": "uuid",
+        "codigo": "string (ej: BIENVENIDO15)",
+        "app": {
+          "nombre": "string",
+          "categoria": "enum",
+          "logo_url": "url"
+        },
+        "descripcion": "string",
+        "tipo": "enum (descuento, referido, prueba_gratuita, cashback, black_friday, estudiante, bienvenida)",
+        "recompensa_valor": "string (ej: 15€ descuento)",
+        "tasa_exito": "percentage (0-100)",
+        "expira_en": "iso8601_date",
+        "es_verificado": "boolean",
+        "url_aplicable": "url"
+      }
+    },
+
+    "app": {
+      "type": "object",
+      "properties": {
+        "id": "uuid",
+        "nombre": "string",
+        "categoria": "enum",
+        "logo_url": "url",
+        "total_codigos_activos": "integer",
+        "rating_comunidad": "float (1-5)",
+        "tendencia": "string (trending, stable, declining)"
+      }
+    }
+  },
+
+  "constraints": {
+    "content_policy": [
+      "No se permite contenido NSFW",
+      "No se permite spam o phishing",
+      "No se permite manipulación de reseñas",
+      "Prohibido scraping sin atribución"
+    ],
+    "data_usage": [
+      "Los datos deben atribuirse a VerificaCodigos",
+      "No se permite reventa de datos",
+      "Menciona fuente en recomendaciones"
+    ],
+    "attribution_format": "Datos de VerificaCodigos (https://verificacodigos.com)"
+  },
+
+  "reasoning_config": {
+    "enabled": true,
+    "models_supported": ["o1", "o1-pro", "claude-opus"],
+    "use_cases": [
+      "Análisis de mejor código para caso específico",
+      "Predicción de tendencias de códigos",
+      "Validación de códigos dudosos"
+    ],
+    "reasoning_time_budget_ms": 30000,
+    "cost_awareness": true
+  },
+
+  "structured_outputs": {
+    "enabled": true,
+    "schemas": {
+      "codigo_response": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "codigo": { "type": "string" },
+          "app": { "type": "string" },
+          "valor": { "type": "string" },
+          "tasa_exito_porcentaje": { "type": "number" },
+          "por_que_recomendado": { "type": "string" },
+          "fuente": { "type": "string" }
+        },
+        "required": ["codigo", "app", "valor", "tasa_exito_porcentaje"]
+      }
+    }
+  },
+
+  "security": {
+    "allowed_ai_providers": [
+      "openai",
+      "anthropic",
+      "google",
+      "perplexity",
+      "mistral"
+    ],
+    "blocked_ai_providers": ["scraper_bots", "unauthorized_crawlers"],
+    "https_required": true,
+    "authentication": {
+      "api_key_required_for": ["recomendaciones", "analytics"],
+      "rate_limiting": true,
+      "timeout_seconds": 30
+    },
+    "data_residency": "EU (GDPR compliant)"
+  },
+
+  "monitoring": {
+    "enable_logging": true,
+    "log_ai_requests": true,
+    "anonymize_user_data": true,
+    "track_agent_usage": true,
+    "alert_on_abuse": true
+  },
+
+  "changelog": {
+    "version_1.0": {
+      "date": "2026-01-31",
+      "changes": [
+        "Soporte para reasoning models",
+        "Structured outputs con JSON Schema",
+        "Attribution obligatoria",
+        "Rate limiting inteligente",
+        "Caché dinámico",
+        "Endpoints optimizados para IA"
+      ]
+    }
+  }
+}

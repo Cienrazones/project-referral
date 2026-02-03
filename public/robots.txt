@@ -1,0 +1,114 @@
+# ============================================
+# robots.txt - VerificaCodigos
+# Optimizado para SEO 2026 + Seguridad
+# ============================================
+
+# User-agent general (todos los bots)
+User-agent: *
+
+# ✅ PERMITIR (páginas importantes para SEO)
+Allow: /
+Allow: /codigos/*
+Allow: /apps/*
+Allow: /app/*
+Allow: /categorias/*
+Allow: /blog/*
+Allow: /guias/*
+
+# ❌ BLOQUEAR (URLs sin valor SEO)
+Disallow: /api/*
+Disallow: /admin/*
+Disallow: /dashboard/*
+Disallow: /perfil/*
+Disallow: /auth/*
+Disallow: /login
+Disallow: /registro
+Disallow: /_next/*
+Disallow: /static/
+
+# 🚫 BLOQUEAR PARÁMETROS DE TRACKING (esencial para evitar duplicados)
+Disallow: /*?utm_source*
+Disallow: /*?utm_medium*
+Disallow: /*?utm_campaign*
+Disallow: /*?utm_content*
+Disallow: /*?utm_term*
+Disallow: /*?fbclid=*
+Disallow: /*?gclid=*
+Disallow: /*?msclkid=*
+Disallow: /*?ref=*
+Disallow: /*?affiliate=*
+Disallow: /*?sort=*
+Disallow: /*?page=*
+Disallow: /*?filter=*
+
+# 🔍 BOTS PERMITIDOS (con límite)
+
+# Googlebot (acceso total)
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# GPTBot (OpenAI) - entrenar modelos IA
+User-agent: GPTBot
+Allow: /
+
+# Claude (Anthropic)
+User-agent: Claude-Web
+Allow: /
+
+# Common Crawl (archivos públicos)
+User-agent: CCBot
+Allow: /
+
+# 🚫 BOTS BLOQUEADOS (competidores + maliciosos)
+
+# Ahrefs (herramienta competidores - consume ancho de banda)
+User-agent: AhrefsBot
+User-agent: AhrefsSiteAudit
+Disallow: /
+
+# Semrush (herramienta competidores)
+User-agent: SemrushBot
+User-agent: SemrushBot-BA
+Disallow: /
+
+# Otros crawlers maliciosos
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: BacklinkCrawler
+Disallow: /
+
+User-agent: SiteAuditBot
+Disallow: /
+
+# ============================================
+# SITEMAPS (URLs de tus sitemaps XML)
+# ============================================
+Sitemap: https://verificacodigos.com/sitemap.xml
+Sitemap: https://verificacodigos.com/sitemap-apps.xml
+Sitemap: https://verificacodigos.com/sitemap-codigos.xml
+Sitemap: https://verificacodigos.com/sitemap-blog.xml
+
+# ============================================
+# CONFIGURACIÓN GLOBAL
+# ============================================
+# Crawl-delay: segundos entre peticiones
+# Tiempo de espera entre visitas del bot
+# 0 = sin límite (solo Googlebot)
+# 1-2 = conservador
+# ============================================
